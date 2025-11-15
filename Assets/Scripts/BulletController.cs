@@ -14,9 +14,6 @@ public class BulletController : MonoBehaviour
         Destroy(gameObject, lifetime);
     }
 
-    // Update is called once per frame
-
-
     void Update()
     {
 
@@ -26,13 +23,12 @@ public class BulletController : MonoBehaviour
     {   
        // this.gameObject.tag = tag;
         transform.forward = originalDirection;
-        rb.velocity = transform.forward * bulletSpeed;
+        rb.linearVelocity = transform.forward * bulletSpeed;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
        
-
         if (collision.gameObject.tag == "Enemy")
         {
             Destroy(collision.gameObject);

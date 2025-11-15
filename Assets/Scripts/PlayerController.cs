@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private int health; // current health of the player
     private int money; // current amount of money the player has
 
-    private Rigidbody rb;
+    //private Rigidbody rb;
 
 
     [Header("Bullet Properites")]
@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     {
         health = maxHealth;
         money = startingMoney;
-        rb = GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(transform.position, -transform.up, out hit, 1f))
         {
             Quaternion rotation = Quaternion.FromToRotation(transform.up, hit.normal);
-            rb.MoveRotation(rotation * transform.rotation);
+            transform.rotation=(rotation * transform.rotation);
         }
 
 
@@ -75,11 +75,11 @@ public class PlayerController : MonoBehaviour
                                                  + transform.right * direction.x * moveSpeed * Time.deltaTime
                                                  + transform.up * direction.y * moveSpeed * Time.deltaTime;
 
-        rb.MovePosition(targetPosition);
+        //rb.MovePosition(targetPosition);
         //rb.AddForce(transform.forward*verticalInput * moveSpeed * Time.deltaTime);
 
         Quaternion targetRotation = transform.rotation * Quaternion.Euler(Vector3.up * (rotationSpeed * horizontalInput * Time.deltaTime));
-        rb.MoveRotation(targetRotation);
+       // rb.MoveRotation(targetRotation);
 
 
 
@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.FromToRotation(transform.up, surfaceNormal) * transform.rotation;
 
             // Apply a force downwards to keep the player on the surface
-            rb.AddForce(surfaceNormal * Physics.gravity.magnitude * -1, ForceMode.Acceleration);
+           // rb.AddForce(surfaceNormal * Physics.gravity.magnitude * -1, ForceMode.Acceleration);
         }
 
 
@@ -112,7 +112,6 @@ public class PlayerController : MonoBehaviour
     {
         return money;
     }
-
 
 
     void OnTriggerEnter(Collider col)

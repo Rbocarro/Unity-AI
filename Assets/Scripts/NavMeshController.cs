@@ -1,23 +1,17 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
 
 public class NavMeshController : MonoBehaviour
 {
-
     NavMeshSurface navmeshSurface;
     public GameObject mapGenerator;
 
+    [Header("K-Means Clustering Parameters")]
     public GameObject[] itemPrefab;
     public int numItems = 10;
     public float yOffset = 200.5f;
     public float spawnRadius = 2000f;
-
-
-
-    //Clustering stuff
     public int numClusters = 5;
     public float cylinderYScale = 10f;
     public float clusterThreshold = 0.1f;//used to determine when the k-means clustering algorithm has converged and should stop iterating
@@ -27,17 +21,17 @@ public class NavMeshController : MonoBehaviour
     void Awake()
     {
         mapGenerator.GetComponent<MapGenerator>().GenerateMap();
+        //navmeshSurface = GetComponent<NavMeshSurface>();
+        gameObject.GetComponent<NavMeshSurface>()?.BuildNavMesh();//navmeshSurface.BuildNavMesh();
 
         MeshCollider meshCollider = GetComponent<MeshCollider>();
-        // Modify the mesh data of the MeshCollider
-        Mesh mesh = meshCollider.sharedMesh;
-        // Make changes to the mesh here
-        meshCollider.sharedMesh = mesh;
-        // Recalculate the bounds of the MeshCollider to ensure proper collision detection
-        meshCollider.sharedMesh.RecalculateBounds();
+        
+        Mesh mesh = meshCollider.sharedMesh;// Modify the mesh data of the MeshCollider
 
-        navmeshSurface = GetComponent<NavMeshSurface>();
-        navmeshSurface.BuildNavMesh();
+        meshCollider.sharedMesh = mesh;// Make changes to the mesh here
+
+        meshCollider.sharedMesh.RecalculateBounds();// Recalculate the bounds of the MeshCollider to ensure proper collision detection
+
 
         for (int i = 0; i < numItems; i++)
         {
@@ -68,10 +62,7 @@ public class NavMeshController : MonoBehaviour
             centroids.Add(centroid);
         }
 
-
     }
-
-
     private Vector3 RandomPointOnNavMesh()
     {
         Vector3 randomDirection = Random.insideUnitSphere * spawnRadius;
